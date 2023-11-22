@@ -1,0 +1,913 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://configcat.com/config_v6.json",
+  "title": "ConfigCat config_v6.json",
+  "description": "A complete ConfigCat config_v6.json schema definition that is used by the ConfigCat SDKs.",
+  "allOf": [
+     { "$ref": "#/$defs/root" }
+  ],
+  "$defs": {
+    "preferences": {
+      "title": "Preferences",
+      "description": "Preferences of the config.json, mostly for controlling the redirection behaviour of the SDK.",
+      "type": "object",
+      "properties": {
+        "u": {
+          "title": "Base URL",
+          "description": "The base url from where the config.json is intended to be downloaded.",
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(https?)://"
+        },
+        "r": {
+          "title": "Redirect mode",
+          "description": "The redirect mode that should be used in case the data governance mode is wrongly configured.",
+          "type": "number",
+          "oneOf": [
+            {
+              "const": 0,
+              "title": "No redirect",
+              "description": "No redirection needed, everything is alright."
+            },
+            {
+              "const": 1,
+              "title": "Redirect",
+              "description": "The config.json should be downloaded again from the Base URL defined in the config.json. If the Base URL is overriden during the SDK initialization we should use that BaseUrl instead of the config.json without any redirection."
+            },
+            {
+              "const": 2,
+              "title": "Forced redirect",
+              "description": "Same as the '1 - Redirect' case, but the SDK should do the redirection even if the Base URL is overriden in the SDK."
+            }
+          ]
+        },
+        "s": {
+          "title": "Config.json level salt",
+          "description": "The salt that, combined with the feature flag key or segment name, is used to hash values for sensitive text comparisons.",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "u",
+        "r",
+        "s"
+      ]
+    },
+    "value": {
+      "title": "ConfigCat value type",
+      "type": "object",
+      "properties": {
+        "b": {
+          "title": "Boolean value",
+          "type": "boolean"
+        },
+        "s": {
+          "title": "String value",
+          "type": "string"
+        },
+        "i": {
+          "title": "Integer value",
+          "type": "integer"
+        },
+        "d": {
+          "title": "Decimal value",
+          "type": "number"
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "b"
+          ]
+        },
+        {
+          "required": [
+            "s"
+          ]
+        },
+        {
+          "required": [
+            "i"
+          ]
+        },
+        {
+          "required": [
+            "d"
+          ]
+        }
+      ]
+    },
+    "variationId": {
+      "title": "Variation ID",
+      "description": "Variation ID for analytics purposes",
+      "type": "string"
+    },
+    "userCondition": {
+      "title": "User condition",
+      "type": "object",
+      "properties": {
+        "a": {
+          "title": "Comparison attribute",
+          "description": "The attribute of the user object that should be used to evalaute this rule",
+          "type": "string",
+          "minLength": 1
+        },
+        "c": {
+          "title": "Comparator",
+          "type": "number",
+          "oneOf": [
+            {
+              "const": 0,
+              "title": "IS ONE OF (cleartext)"
+            },
+            {
+              "const": 1,
+              "title": "IS NOT ONE OF (cleartext)"
+            },
+            {
+              "const": 2,
+              "title": "CONTAINS ANY OF (cleartext)"
+            },
+            {
+              "const": 3,
+              "title": "NOT CONTAINS ANY OF (cleartext)"
+            },
+            {
+              "const": 4,
+              "title": "IS ONE OF (semver)"
+            },
+            {
+              "const": 5,
+              "title": "IS NOT ONE OF (semver)"
+            },
+            {
+              "const": 6,
+              "title": "< (semver)"
+            },
+            {
+              "const": 7,
+              "title": "<= (semver)"
+            },
+            {
+              "const": 8,
+              "title": "> (semver)"
+            },
+            {
+              "const": 9,
+              "title": ">= (semver)"
+            },
+            {
+              "const": 10,
+              "title": "= (number)"
+            },
+            {
+              "const": 11,
+              "title": "!= (number)"
+            },
+            {
+              "const": 12,
+              "title": "< (number)"
+            },
+            {
+              "const": 13,
+              "title": "<= (number)"
+            },
+            {
+              "const": 14,
+              "title": "> (number)"
+            },
+            {
+              "const": 15,
+              "title": ">= (number)"
+            },
+            {
+              "const": 16,
+              "title": "IS ONE OF (hashed)"
+            },
+            {
+              "const": 17,
+              "title": "IS NOT ONE OF (hashed)"
+            },
+            {
+              "const": 18,
+              "title": "BEFORE (UTC datetime)"
+            },
+            {
+              "const": 19,
+              "title": "AFTER (UTC datetime)"
+            },
+            {
+              "const": 20,
+              "title": "EQUALS (hashed)"
+            },
+            {
+              "const": 21,
+              "title": "NOT EQUALS (hashed)"
+            },
+            {
+              "const": 22,
+              "title": "STARTS WITH ANY OF (hashed)"
+            },
+            {
+              "const": 23,
+              "title": "NOT STARTS WITH ANY OF (hashed)"
+            },
+            {
+              "const": 24,
+              "title": "ENDS WITH ANY OF (hashed)"
+            },
+            {
+              "const": 25,
+              "title": "NOT ENDS WITH ANY OF (hashed)"
+            },
+            {
+              "const": 26,
+              "title": "ARRAY CONTAINS ANY OF (hashed)"
+            },
+            {
+              "const": 27,
+              "title": "ARRAY NOT CONTAINS ANY OF (hashed)"
+            },
+            {
+              "const": 28,
+              "title": "EQUALS (cleartext)"
+            },
+            {
+              "const": 29,
+              "title": "NOT EQUALS (cleartext)"
+            },
+            {
+              "const": 30,
+              "title": "STARTS WITH ANY OF (cleartext)"
+            },
+            {
+              "const": 31,
+              "title": "NOT STARTS WITH ANY OF (cleartext)"
+            },
+            {
+              "const": 32,
+              "title": "ENDS WITH ANY OF (cleartext)"
+            },
+            {
+              "const": 33,
+              "title": "NOT ENDS WITH ANY OF (cleartext)"
+            },
+            {
+              "const": 34,
+              "title": "ARRAY CONTAINS ANY OF (cleartext)"
+            },
+            {
+              "const": 35,
+              "title": "ARRAY NOT CONTAINS ANY OF (cleartext)"
+            }
+          ]
+        },
+        "s": {
+          "title": "Comparison value (string)",
+          "type": "string"
+        },
+        "d": {
+          "title": "Comparison value (number)",
+          "type": "number"
+        },
+        "l": {
+          "title": "Comparison value (string list)",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "a",
+        "c"
+      ],
+      "oneOf": [
+        {
+          "required": [
+            "s"
+          ]
+        },
+        {
+          "required": [
+            "d"
+          ]
+        },
+        {
+          "required": [
+            "l"
+          ]
+        }
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "c": {
+                "enum": [
+                  6,
+                  7,
+                  8,
+                  9,
+                  20,
+                  21,
+                  28,
+                  29
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "s"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "c": {
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  16,
+                  17,
+                  22,
+                  23,
+                  24,
+                  25,
+                  26,
+                  27,
+                  30,
+                  31,
+                  32,
+                  33,
+                  34,
+                  35
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "l"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "c": {
+                "enum": [
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15,
+                  18,
+                  19
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "d"
+            ]
+          }
+        }
+      ]
+    },
+    "segment": {
+      "type": "object",
+      "properties": {
+        "n": {
+          "title": "Segment name",
+          "type": "string",
+          "minLength": 1
+        },
+        "r": {
+          "title": "Segment rule conditions (AND)",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/userCondition"
+          }
+        }
+      },
+      "required": [
+        "n",
+        "r"
+      ]
+    },
+    "segmentCondition": {
+      "title": "Segment rule condition",
+      "type": "object",
+      "properties": {
+        "s": {
+          "title": "Segment index",
+          "type": "number"
+        },
+        "c": {
+          "title": "Segment comparator",
+          "type": "number",
+          "oneOf": [
+            {
+              "const": 0,
+              "title": "IS IN SEGMENT"
+            },
+            {
+              "const": 1,
+              "title": "IS NOT IN SEGMENT"
+            }
+          ]
+        }
+      },
+      "required": [
+        "s",
+        "c"
+      ]
+    },
+    "prerequisiteFlagCondition": {
+      "title": "Prerequisite / feature flag dependency condition",
+      "type": "object",
+      "properties": {
+        "f": {
+          "title": "Prerequisite feature flag's key",
+          "type": "string",
+          "minLength": 1
+        },
+        "c": {
+          "title": "Prerequisite comparator",
+          "type": "number",
+          "oneOf": [
+            {
+              "const": 0,
+              "title": "EQUALS"
+            },
+            {
+              "const": 1,
+              "title": "NOT EQUALS"
+            }
+          ]
+        },
+        "v": {
+          "title": "Prerequisite comparison value",
+          "$ref": "#/$defs/value"
+        }
+      },
+      "required": [
+        "f",
+        "c",
+        "v"
+      ]
+    },
+    "percentageOption": {
+      "properties": {
+        "p": {
+          "title": "Percentage",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "v": {
+          "$ref": "#/$defs/value"
+        },
+        "i": {
+          "$ref": "#/$defs/variationId"
+        }
+      },
+      "required": [
+        "p",
+        "v",
+        "i"
+      ]
+    },
+    "targetingRule": {
+      "properties": {
+        "c": {
+          "title": "Rule conditions (AND)",
+          "type": "array",
+          "items": {
+            "properties": {
+              "u": {
+                "$ref": "#/$defs/userCondition"
+              },
+              "s": {
+                "$ref": "#/$defs/segmentCondition"
+              },
+              "p": {
+                "$ref": "#/$defs/prerequisiteFlagCondition"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "u"
+                ]
+              },
+              {
+                "required": [
+                  "s"
+                ]
+              },
+              {
+                "required": [
+                  "p"
+                ]
+              }
+            ]
+          }
+        },
+        "p": {
+          "title": "Percentage options",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/percentageOption"
+          }
+        },
+        "s": {
+          "title": "Served value",
+          "properties": {
+            "v": {
+              "$ref": "#/$defs/value"
+            },
+            "i": {
+              "$ref": "#/$defs/variationId"
+            }
+          },
+          "required": [
+            "v",
+            "i"
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "p"
+          ]
+        },
+        {
+          "required": [
+            "s"
+          ]
+        }
+      ]
+    },
+    "featureFlag": {
+      "properties": {
+        "t": {
+          "title": "Setting type",
+          "type": "number",
+          "oneOf": [
+            {
+              "const": 0,
+              "title": "On/Off Toggle (boolean)"
+            },
+            {
+              "const": 1,
+              "title": "Text (string)"
+            },
+            {
+              "const": 2,
+              "title": "Whole Number (integer)"
+            },
+            {
+              "const": 3,
+              "title": "Decimal Number (double)"
+            }
+          ]
+        },
+        "a": {
+          "title": "Percentage rule attribute",
+          "description": "The percentage rule evaluation will hash this attribute of the User object to calculate the buckets.",
+          "type": "string",
+          "minLength": 1
+        },
+        "r": {
+          "title": "Targeting rules (OR)",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/targetingRule"
+          }
+        },
+        "p": {
+          "title": "Percentage options",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/percentageOption"
+          }
+        },
+        "v": {
+          "title": "Default value",
+          "$ref": "#/$defs/value"
+        },
+        "i": {
+          "title": "Default variation ID",
+          "$ref": "#/$defs/variationId"
+        }
+      },
+      "required": [
+        "t",
+        "v",
+        "i"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "t": {
+                "const": 0
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "v": {
+                "required": [
+                  "b"
+                ]
+              },
+              "r": {
+                "items": {
+                  "properties": {
+                    "s": {
+                      "properties": {
+                        "v": {
+                          "required": [
+                            "b"
+                          ]
+                        }
+                      }
+                    },
+                    "p": {
+                      "items": {
+                        "properties": {
+                          "v": {
+                            "required": [
+                              "b"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "p": {
+                "items": {
+                  "properties": {
+                    "v": {
+                      "required": [
+                        "b"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "t": {
+                "const": 1
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "v": {
+                "required": [
+                  "s"
+                ]
+              },
+              "r": {
+                "items": {
+                  "properties": {
+                    "s": {
+                      "properties": {
+                        "v": {
+                          "required": [
+                            "s"
+                          ]
+                        }
+                      }
+                    },
+                    "p": {
+                      "items": {
+                        "properties": {
+                          "v": {
+                            "required": [
+                              "s"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "p": {
+                "items": {
+                  "properties": {
+                    "v": {
+                      "required": [
+                        "s"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "t": {
+                "const": 2
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "v": {
+                "required": [
+                  "i"
+                ]
+              },
+              "r": {
+                "items": {
+                  "properties": {
+                    "s": {
+                      "properties": {
+                        "v": {
+                          "required": [
+                            "i"
+                          ]
+                        }
+                      }
+                    },
+                    "p": {
+                      "items": {
+                        "properties": {
+                          "v": {
+                            "required": [
+                              "i"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "p": {
+                "items": {
+                  "properties": {
+                    "v": {
+                      "required": [
+                        "i"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "t": {
+                "const": 3
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "v": {
+                "required": [
+                  "d"
+                ]
+              },
+              "r": {
+                "items": {
+                  "properties": {
+                    "s": {
+                      "properties": {
+                        "v": {
+                          "required": [
+                            "d"
+                          ]
+                        }
+                      }
+                    },
+                    "p": {
+                      "items": {
+                        "properties": {
+                          "v": {
+                            "required": [
+                              "d"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "p": {
+                "items": {
+                  "properties": {
+                    "v": {
+                      "required": [
+                        "d"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "title": "Preferences",
+          "description": "Preferences of the config.json, mostly for controlling the redirection behaviour of the SDK.",
+          "$ref": "#/$defs/preferences"
+        },
+        "s": {
+          "title": "Segments",
+          "description": "Segment definitions for re-using segment rules in targeting rules.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/segment"
+          }
+        },
+        "f": {
+          "title": "Feature flags",
+          "description": "Feature flag definitions",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/featureFlag"
+          }
+        }
+      },
+      "required": [
+        "p"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "p": {
+                "properties": {
+                  "r": {
+                    "const": 0
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "f"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "p": {
+                "properties": {
+                  "r": {
+                    "const": 1
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "f": false,
+              "s": false
+            }
+          }
+        }
+      ]
+    }
+  }
+}
