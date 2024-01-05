@@ -52,7 +52,7 @@ declare namespace ConfigCat.ConfigJson {
   type TargetingRule<TSetting extends SettingType = SettingType> = {
     c: [ConditionUnion, ...ConditionUnion[]];
   } & (
-    { s: ServedValue, p?: never } 
+    { s: ServedValue<TSetting>, p?: never } 
     | { p: PercentageOption<TSetting>[], s?: never }
   )
 
